@@ -1,0 +1,2 @@
+There is no layout in ejs instead of that we make the reusable part of code as separated file
+and use it in each view
