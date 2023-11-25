@@ -1,5 +1,16 @@
 const Product = require("../model/product_model");
 
+const products = [];
+exports.postAppProducts = (req, res, next) => {
+  const title = req.body.title;
+  const imageUrl = req.body.imageUrl;
+  const price = req.body.price;
+  const description = req.body.description;
+  const product = new Product(title, imageUrl, description, price);
+  product.save();
+  res.redirect("/");
+};
+
 exports.getAddProducts = (req, res, next) => {
   res.render("admin/add-product", {
     pageTitle: "Add Product",
@@ -11,27 +22,13 @@ exports.getAddProducts = (req, res, next) => {
   //=> path is passing to the main layout to make the style of link [Add product] dynamic
   //=> path could be anything
 };
-const products = [];
-exports.postAppProducts = (req, res, next) => {
-  const product = new Product(req.body.title);
-  product.save();
-  res.redirect("/");
-};
 
 exports.getProducts = (req, res, next) => {
   Product.fetchAll((products) => {
-    res.render("shop/product-list", {
+    res.render("admin/products", {
       prods: products,
-      pageTitle: "Shop",
-      path: "/",
-      hasProducts: products.length > 0,
-      activeShop: true,
-      productCss: true,
+      pageTitle: "Admin products",
+      path: "/admin/products",
     }); //=> passing products to view
   });
-
-  //=> render is a default function use to render template engine
-  //=> it go to the path we define in the global set
-  //=> also no need to set the type of the file because we set the
-  //=> engine type to be pug
 };
